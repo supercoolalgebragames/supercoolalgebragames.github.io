@@ -1,6 +1,5 @@
 # supercoolalgebragames.github.io
-<html>
-<javascript>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -91,7 +90,7 @@
             ["V = lwh", "Formula"],
             ["E = mc^2", "Formula"]
         ];
-       
+        
         const CARD_COUNT = 10; // Number of cards per round
 
         let gameState = {
@@ -118,7 +117,7 @@
 
             // Set up event listeners
             startButton.addEventListener('click', startGame);
-           
+            
             // Initial UI setup
             resetUI();
             displayCategories();
@@ -144,7 +143,7 @@
             gameState.score = 0;
             gameState.currentCardIndex = 0;
             gameState.isGameActive = true;
-           
+            
             // Create the deck (shuffle and take the first 10)
             shuffleArray(ALL_CARDS);
             gameState.deck = ALL_CARDS.slice(0, CARD_COUNT);
@@ -154,12 +153,12 @@
             gameInterface.classList.remove('hidden');
             scoreDisplay.textContent = `${gameState.score}/${CARD_COUNT}`;
             statusMessage.textContent = "Game started! Sort the expression below.";
-           
+            
             // Start Timer
             gameState.startTime = performance.now();
             clearInterval(gameState.timerInterval);
             gameState.timerInterval = setInterval(updateTimer, 100); // Update timer every 100ms
-           
+            
             nextCard();
         }
 
@@ -182,7 +181,7 @@
                 categoryButtonsContainer.appendChild(button);
             });
         }
-       
+        
         function nextCard() {
             if (gameState.currentCardIndex >= CARD_COUNT) {
                 endGame();
@@ -190,12 +189,14 @@
             }
 
             const [expression, correctCategory] = gameState.deck[gameState.currentCardIndex];
-           
+            
             // Display the expression using MathJax notation
             cardDisplay.innerHTML = `$$\\text{Card ${gameState.currentCardIndex + 1} / ${CARD_COUNT}:} \\quad ${expression}$$`;
-           
+            
             // Rerender MathJax to process the new expression
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, cardDisplay]);
+            if (window.MathJax) {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, cardDisplay]);
+            }
 
             // Enable buttons
             categoryButtonsContainer.querySelectorAll('button').forEach(btn => btn.disabled = false);
@@ -218,23 +219,26 @@
             }
 
             scoreDisplay.textContent = `${gameState.score}/${CARD_COUNT}`;
-           
+            
             gameState.currentCardIndex++;
-           
+            
             // Short delay before moving to the next card
             setTimeout(nextCard, 1000); 
         }
-       
+        
         function endGame() {
             gameState.isGameActive = false;
             clearInterval(gameState.timerInterval);
-           
+            
             const totalTime = (performance.now() - gameState.startTime) / 1000;
             const finalMessage = `Game Over! You scored ${gameState.score}/${CARD_COUNT} in ${totalTime.toFixed(2)} seconds.`;
 
             // Display final message and 'Play Again' button
             statusMessage.textContent = finalMessage;
             cardDisplay.innerHTML = '$$\\text{Great job completing the challenge!}$$';
+            if (window.MathJax) {
+                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, cardDisplay]);
+            }
             startButton.textContent = "Play Again";
             startButton.classList.remove('hidden');
             gameInterface.classList.add('hidden');
@@ -264,6 +268,52 @@
                 <div class="-mr-2 flex md:hidden">
                     <button type="button" class="bg-purple-800 inline-flex items-center justify-center p-2 rounded-md text-pink-300 hover:text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-purple-800 focus:ring-white">
                         <span class="sr-only">Open main menu</span>
-                        <svg class="block h-6 w
-<javascript>
-<html>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-4 md:p-8" id="game">
+        <div class="bg-purple-900/60 backdrop-blur-lg border border-purple-700/50 rounded-2xl shadow-2xl overflow-hidden">
+            
+            <header class="p-6 border-b border-purple-700/50">
+                <h1 class="text-3xl font-bold text-center text-white">Algebra Vocabulary Sort</h1>
+                <p id="status-message" class="text-center text-pink-200 mt-2">Click 'Start Game' to test your algebra vocabulary!</p>
+            </header>
+
+            <div id="start-button-container" class="p-6 text-center">
+                <button id="start-button" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 px-10 rounded-lg text-xl transition duration-300 shadow-lg transform hover:scale-105">
+                    Start Game
+                </button>
+            </div>
+
+            <div id="game-interface" class="hidden">
+                <div class="flex flex-col md:flex-row justify-around p-4 bg-purple-800/50 border-b border-purple-700/50">
+                    <div class="text-center md:text-left mb-2 md:mb-0">
+                        <span class="text-sm font-medium text-pink-300 uppercase">Timer</span>
+                        <span id="timer-display" class="block text-2xl font-bold text-white">0.00s</span>
+                    </div>
+                    <div class="text-center md:text-right">
+                        <span class="text-sm font-medium text-pink-300 uppercase">Score</span>
+                        <span id="score-display" class="block text-2xl font-bold text-white">0/10</span>
+                    </div>
+                </div>
+
+                <div class="p-6 md:p-10 min-h-[150px] flex items-center justify-center bg-purple-900/30">
+                    <div id="card-display" class="text-3xl md:text-4xl font-mono text-center text-pink-100">
+                        </div>
+                </div>
+
+                <div id="category-buttons" class.name="p-4 md:p-6 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 bg-purple-800/50 border-t border-purple-700/50">
+                    </div>
+            </div>
+            
+        </div>
+    </main>
+
+</body>
+</html>
