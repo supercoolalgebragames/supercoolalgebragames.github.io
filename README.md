@@ -4,51 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Algebra Adventure</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* Custom scrollbar for a more thematic feel */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #231d4b; /* Dark purple */
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #ec4899; /* Pink */
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #f472b6; /* Lighter pink */
-        }
-    </style>
-    <script>
-        // Configuration for Tailwind
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        // Extending the palette to make your colors easier to use
-                        theme: {
-                            purple: '#4c1d95', // deep purple
-                            'purple-light': '#6d28d9', 
-                            pink: '#ec4899',
-                            'pink-light': '#f9a8d4',
-                            red: '#ef4444',
-                            'red-light': '#f87171',
-                        }
-                    }
-                }
-            }
-        }
-
         /* --- GAME LOGIC START --- */
 
         // Game Data (Converted from Python)
