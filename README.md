@@ -1,6 +1,6 @@
 # supercoolalgebragames.github.io
-
-<!DOCTYPE html>
+<html>
+<javascript>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -265,3 +265,5 @@
                     <button type="button" class="bg-purple-800 inline-flex items-center justify-center p-2 rounded-md text-pink-300 hover:text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-purple-800 focus:ring-white">
                         <span class="sr-only">Open main menu</span>
                         <svg class="block h-6 w
+<javascript>
+<html>
