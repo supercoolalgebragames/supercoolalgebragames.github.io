@@ -1,4 +1,3 @@
-#supercoolalgebragames.github.io
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,18 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ANIMATED BACKGROUND STYLES --- */
-        @keyframes gradient-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .animated-purple-gradient {
-            /* Four colors: Deep Purple, Dark Indigo, Bright Violet, and a touch of Pink */
-            background: linear-gradient(-45deg, #4c1d95, #312e81, #6d28d9, #ec4899);
-            background-size: 400% 400%;
-            animation: gradient-animation 15s ease infinite; /* Slower, smoother animation */
+        /* --- STATIC BACKGROUND STYLES (REPLACED ANIMATED) --- */
+        .static-purple-gradient {
+            /* Static deep purple gradient for a modern, rounded background */
+            background: linear-gradient(135deg, #2c0a4e 0%, #1e1b3a 100%);
             width: 100%;
             height: 100%;
             position: fixed; /* Ensures it covers the entire viewport */
@@ -30,7 +21,7 @@
             z-index: -1; /* Puts it behind all content */
         }
         
-        /* Custom scrollbar for a more thematic feel */
+        /* Custom scrollbar retained for thematic feel */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -53,7 +44,7 @@
         }
     </style>
     <script>
-        // Configuration for Tailwind
+        // Configuration for Tailwind (Kept for rounded corners and custom colors)
         tailwind.config = {
             theme: {
                 extend: {
@@ -74,7 +65,7 @@
             }
         }
 
-        /* --- GAME LOGIC START (CARD_COUNT = 20 from 120-Card Pool) --- */
+        /* --- GAME LOGIC START (FULL LOGIC RETAINED) --- */
 
         const CATEGORIES = ["Equation", "Inequality", "Expression", "Constant", "Identity", "Function"];
         
@@ -279,7 +270,7 @@
 </head>
 <body class="font-sans text-pink-100 antialiased">
 
-    <div class="animated-purple-gradient"></div>
+        <div class="static-purple-gradient"></div>
 
     <div class="main-content-wrapper">
 
