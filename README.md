@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -262,6 +263,8 @@
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
                         <a href="#home" class="bg-purple-800 text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#lessons" class="text-pink-200 hover:bg-purple-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Lessons</a>
+                        <a href="#puzzles" class="text-pink-200 hover:bg-purple-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Puzzles</a>
                         <a href="#game" class="text-pink-200 hover:bg-purple-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Game (20 Qs)</a>
                     </div>
                 </div>
@@ -279,7 +282,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-        <section id="home" class="text-center mb-16 rounded-lg bg-purple-800/30 backdrop-blur-sm border border-purple-700/50 p-10">
+        <section id="home" class="text-center mb-16 rounded-lg bg-purple-800/30 backdrop-blur-sm border border-purple-700/50 p-10 pt-20">
             <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">Welcome to <span class="text-pink-400">{</span> Algebra Adventure <span class="text-pink-400">}</span>!</h1>
             <p class="text-xl text-pink-200 mb-8">Ready for the **20-Question Challenge**? High variety, quick test!</p>
             <a href="#game" class="bg-pink-600 text-white hover:bg-pink-700 font-bold py-3 px-6 rounded-lg text-lg transition duration-300 shadow-lg hover:shadow-xl">
@@ -287,7 +290,7 @@
             </a>
         </section>
 
-        <section id="lessons" class="mb-16">
+        <section id="lessons" class="mb-16 pt-16">
             <h2 class="text-3xl font-bold text-white mb-6">Key Concepts</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-purple-800/60 backdrop-blur-sm border border-purple-700 rounded-lg shadow-lg p-6 hover:shadow-pink-500/20 hover:border-pink-500 transition-all">
@@ -304,8 +307,19 @@
                 </div>
             </div>
         </section>
+        
+        <section id="puzzles" class="mb-16 pt-16">
+            <h2 class="text-3xl font-bold text-white mb-6">🧠 Algebraic Puzzles & Brain Teasers</h2>
+            <div class="bg-purple-800/50 border border-pink-500 rounded-lg shadow-xl p-8 text-center">
+                <p class="text-xl text-pink-100 mb-4">Challenge your logic! This section is reserved for interactive puzzles like Cryptarithms, Math Grid Puzzles, and Visual Algebra Challenges.</p>
+                <div class="text-2xl font-bold text-pink-400">
+                    Coming Soon: <span class="text-white">Solve the unknown!</span>
+                </div>
+                <p class="text-lg text-pink-200 mt-2">Check back later for new content, or head over to the **Game** to practice sorting.</p>
+            </div>
+        </section>
 
-        <section id="game" class="bg-purple-900/70 backdrop-blur-lg border border-purple-700 rounded-lg shadow-2xl p-6 md:p-8 text-center">
+        <section id="game" class="bg-purple-900/70 backdrop-blur-lg border border-purple-700 rounded-lg shadow-2xl p-6 md:p-8 text-center pt-16">
             <h2 class="text-3xl font-bold text-white mb-4">Algebra Sorting Challenge (20 Questions!)</h2>
             <p id="status-message" class="text-lg text-pink-200 mb-6 transition duration-500">
                 Challenge: Sort 20 random algebraic items by type! (120 card pool)
