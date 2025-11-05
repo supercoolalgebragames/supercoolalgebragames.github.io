@@ -4,49 +4,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra Adventure</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for rendering beautiful algebraic expressions -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom scrollbar for a more thematic feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #231d4b; /* Dark purple */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ec4899; /* Pink */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f472b6; /* Lighter pink */
+        }
+    </style>
+    <script>
+        // Configuration for Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        // Extending the palette to make your colors easier to use
+                        theme: {
+                            purple: '#4c1d95', // deep purple
+                            'purple-light': '#6d28d9', 
+                            pink: '#ec4899',
+                            'pink-light': '#f9a8d4',
+                            red: '#ef4444',
+                            'red-light': '#f87171',
+                        }
+                    }
+                }
+            }
+        }
+
         /* --- GAME LOGIC START --- */
 
-        // Game Data (Converted from Python)
-        
-        // **FIX 1: Updated CATEGORIES to match the PDF**
-        const CATEGORIES = ["Identity", "Expression", "Term", "Inequality", "Equation", "Formula"];
-        
-        // **FIX 2: Updated ALL_CARDS to match new categories (24 total, >20 min)**
+        // Updated Game Data: Removed Monomial, Binomial, and Trinomial
+        const CATEGORIES = ["Equation", "Inequality", "Constant"];
         // Format: [Algebraic Expression (LaTeX/MathJax), Correct Category]
         const ALL_CARDS = [
-            // Identities
-            ["2(x + 3) = 2x + 6", "Identity"],
-            ["a^2 - b^2 = (a-b)(a+b)", "Identity"],
-            ["(x+1)^2 = x^2 + 2x + 1", "Identity"],
-            // Expressions
-            ["3x + 2y - 5", "Expression"],
-            ["4a^2", "Expression"],
-            ["\\frac{x+1}{2}", "Expression"],
-            ["5(y - 3)", "Expression"],
-            // Terms
-            ["5x^2", "Term"],
-            ["-3y", "Term"],
-            ["7", "Term"],
-            ["ab", "Term"],
-            // Inequalities
-            ["x + 5 > 10", "Inequality"],
-            ["3y - 2 \\le 7", "Inequality"],
-            ["4a < 20", "Inequality"],
-            ["b \\ge -1", "Inequality"],
-            // Equations
-            ["3x - 1 = 11", "Equation"],
-            ["5a = 30", "Equation"],
-            ["y^2 = 25", "Equation"],
-            ["\\frac{x}{2} + 1 = 5", "Equation"],
-            // Formulas
-            ["A = \\pi r^2", "Formula"],
-            ["C = 2\\pi r", "Formula"],
-            ["F = ma", "Formula"],
-            ["V = lwh", "Formula"],
-            ["E = mc^2", "Formula"]
+            // Equations (Has an '=' sign)
+            ["4x - 1 = 15", "Equation"], ["a + b = c", "Equation"], ["\\frac{y}{2} = 10", "Equation"],
+            // Inequalities (Has <, >, \\le, or \\ge)
+            ["3z + 1 > 7", "Inequality"], ["x - 5 \\le 20", "Inequality"], ["2y < 12", "Inequality"],
+            // Constants (Number without a variable)
+            ["10", "Constant"], ["-3.5", "Constant"], ["\\pi", "Constant"],
         ];
         
-        const CARD_COUNT = 10; // Number of cards per round
+        const CARD_COUNT = ALL_CARDS.length; // Max cards is now 9
 
         let gameState = {
             score: 0,
@@ -82,7 +102,8 @@
             gameInterface.classList.add('hidden');
             startButton.classList.remove('hidden');
             statusMessage.textContent = "Click 'Start Game' to test your algebra vocabulary!";
-            cardDisplay.innerHTML = '$\\text{Card Loading...}$';
+            // Updated: Simple text display for loading
+            cardDisplay.innerHTML = '<span class="text-4xl text-pink-100">Card Loading...</span>';
             timerDisplay.textContent = '0.00s';
             scoreDisplay.textContent = `0/${CARD_COUNT}`;
         }
@@ -99,7 +120,7 @@
             gameState.currentCardIndex = 0;
             gameState.isGameActive = true;
             
-            // Create the deck (shuffle and take the first 10)
+            // Create the deck (shuffle and take all available cards)
             shuffleArray(ALL_CARDS);
             gameState.deck = ALL_CARDS.slice(0, CARD_COUNT);
 
@@ -128,7 +149,7 @@
             categoryButtonsContainer.innerHTML = ''; // Clear previous buttons
             CATEGORIES.forEach((category, index) => {
                 const button = document.createElement('button');
-                // Use index + 1 for user-friendly display (1-6)
+                // Use index + 1 for user-friendly display (1-3)
                 button.textContent = `${index + 1}. ${category}`; 
                 button.className = 'w-full md:w-auto flex-1 bg-pink-600 hover:bg-pink-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 shadow-md transform hover:scale-105 disabled:bg-gray-500';
                 button.setAttribute('data-index', index);
@@ -145,13 +166,11 @@
 
             const [expression, correctCategory] = gameState.deck[gameState.currentCardIndex];
             
-            // Display the expression using MathJax notation
-            cardDisplay.innerHTML = `$$\\text{Card ${gameState.currentCardIndex + 1} / ${CARD_COUNT}:} \\quad ${expression}$$`;
+            // REMOVED $ delimiters, relying on MathJax's ability to render the content without explicit delimiters.
+            cardDisplay.innerHTML = `<span class="text-4xl font-bold text-white">Card ${gameState.currentCardIndex + 1} / ${CARD_COUNT}: &nbsp; ${expression}</span>`;
             
             // Rerender MathJax to process the new expression
-            if (window.MathJax) {
-                MathJax.Hub.Queue(["Typeset", MathJax.Hub, cardDisplay]);
-            }
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, cardDisplay]);
 
             // Enable buttons
             categoryButtonsContainer.querySelectorAll('button').forEach(btn => btn.disabled = false);
@@ -190,10 +209,8 @@
 
             // Display final message and 'Play Again' button
             statusMessage.textContent = finalMessage;
-            cardDisplay.innerHTML = '$$\\text{Great job completing the challenge!}$$';
-            if (window.MathJax) {
-                 MathJax.Hub.Queue(["Typeset", MathJax.Hub, cardDisplay]);
-            }
+            // Updated: Simple text display for game over
+            cardDisplay.innerHTML = '<span class="text-4xl text-white font-bold">Great job completing the challenge!</span>';
             startButton.textContent = "Play Again";
             startButton.classList.remove('hidden');
             gameInterface.classList.add('hidden');
@@ -204,6 +221,7 @@
 </head>
 <body class="font-sans bg-gradient-to-br from-[#1e1b4b] via-[#312e81] to-[#4c1d95] text-pink-100 min-h-screen antialiased">
 
+    <!-- Header Navigation -->
     <nav class="bg-purple-900/50 backdrop-blur-md sticky top-0 z-50 border-b border-purple-700/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -220,9 +238,11 @@
                         <a href="#game" class="text-pink-200 hover:bg-purple-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Game</a>
                     </div>
                 </div>
+                <!-- Mobile Menu Button (optional) -->
                 <div class="-mr-2 flex md:hidden">
                     <button type="button" class="bg-purple-800 inline-flex items-center justify-center p-2 rounded-md text-pink-300 hover:text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-purple-800 focus:ring-white">
                         <span class="sr-only">Open main menu</span>
+                        <!-- Icon for menu (hamburger) -->
                         <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -232,43 +252,145 @@
         </div>
     </nav>
 
-    <main class="max-w-4xl mx-auto p-4 md:p-8" id="game">
-        <div class="bg-purple-900/60 backdrop-blur-lg border border-purple-700/50 rounded-2xl shadow-2xl overflow-hidden">
-            
-            <header class="p-6 border-b border-purple-700/50">
-                <h1 class="text-3xl font-bold text-center text-white">Algebra Vocabulary Sort</h1>
-                <p id="status-message" class="text-center text-pink-200 mt-2">Click 'Start Game' to test your algebra vocabulary!</p>
-            </header>
+    <!-- Main Content Area -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-            <div id="start-button-container" class="p-6 text-center">
-                <button id="start-button" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-4 px-10 rounded-lg text-xl transition duration-300 shadow-lg transform hover:scale-105">
-                    Start Game
-                </button>
-            </div>
+        <!-- Hero Section -->
+        <section id="home" class="text-center mb-16 rounded-lg bg-purple-800/30 backdrop-blur-sm border border-purple-700/50 p-10">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">Welcome to <span class="text-pink-400">{</span> Algebra Adventure <span class="text-pink-400">}</span>!</h1>
+            <p class="text-xl text-pink-200 mb-8">Your new home for exploring variables, equations, and functions.</p>
+            <a href="#lessons" class="bg-pink-600 text-white hover:bg-pink-700 font-bold py-3 px-6 rounded-lg text-lg transition duration-300 shadow-lg hover:shadow-xl">
+                Start Learning
+            </a>
+        </section>
 
-            <div id="game-interface" class="hidden">
-                <div class="flex flex-col md:flex-row justify-around p-4 bg-purple-800/50 border-b border-purple-700/50">
-                    <div class="text-center md:text-left mb-2 md:mb-0">
-                        <span class="text-sm font-medium text-pink-300 uppercase">Timer</span>
-                        <span id="timer-display" class="block text-2xl font-bold text-white">0.00s</span>
-                    </div>
-                    <div class="text-center md:text-right">
-                        <span class="text-sm font-medium text-pink-300 uppercase">Score</span>
-                        <span id="score-display" class="block text-2xl font-bold text-white">0/10</span>
-                    </div>
+        <!-- Lessons Section -->
+        <section id="lessons" class="mb-16">
+            <h2 class="text-3xl font-bold text-white mb-6">Key Concepts</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-purple-800/60 backdrop-blur-sm border border-purple-700 rounded-lg shadow-lg p-6 hover:shadow-pink-500/20 hover:border-pink-500 transition-all">
+                    <h3 class="text-2xl font-semibold text-pink-300 mb-3">Variables</h3>
+                    <p class="text-pink-200">Learn all about the mysterious 'x' and 'y' and how they represent unknown numbers.</p>
                 </div>
+                <!-- Card 2 -->
+                <div class="bg-purple-800/60 backdrop-blur-sm border border-purple-700 rounded-lg shadow-lg p-6 hover:shadow-pink-500/20 hover:border-pink-500 transition-all">
+                    <h3 class="text-2xl font-semibold text-pink-300 mb-3">Equations</h3>
+                    <p class="text-pink-200">Master the art of balancing equations to find the solution. Like <code class="text-pink-400 bg-purple-900 px-2 py-1 rounded">2x + 5 = 15</code>!</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-purple-800/60 backdrop-blur-sm border border-purple-700 rounded-lg shadow-lg p-6 hover:shadow-pink-500/20 hover:border-pink-500 transition-all">
+                    <h3 class="text-2xl font-semibold text-pink-300 mb-3">Functions</h3>
+                    <p class="text-pink-200">Discover how functions like <code class="text-pink-400 bg-purple-900 px-2 py-1 rounded">f(x) = x^2</code> create predictable patterns.</p>
+                </div>
+            </div>
+        </section>
 
-                <div class="p-6 md:p-10 min-h-[150px] flex items-center justify-center bg-purple-900/30">
-                    <div id="card-display" class="text-3xl md:text-4xl font-mono text-center text-pink-100">
+        <!-- Puzzles Section -->
+        <section id="puzzles" class="mb-16">
+            <h2 class="text-3xl font-bold text-white mb-6">Solve the Puzzles!</h2>
+            <p class="text-lg text-pink-200 mb-8">Put your new skills to the test with these quick challenges. Hover over the solution button to reveal the answer!</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Puzzle 1: Linear Equation -->
+                <div class="bg-purple-800/60 backdrop-blur-sm border border-red-500 rounded-lg shadow-lg p-6">
+                    <h3 class="text-2xl font-semibold text-red-400 mb-3">Puzzle 1: Find X</h3>
+                    <p class="text-pink-100 text-xl font-bold mb-4">
+                        If <span class="text-pink-300">3x + 7 = 25</span>, what is the value of x?
+                    </p>
+                    <div class="relative group">
+                        <button class="w-full bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 hover:bg-red-700">
+                            Show Solution
+                        </button>
+                        <div class="absolute inset-0 flex items-center justify-center bg-red-900/90 text-white text-2xl font-extrabold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            x = 6
                         </div>
+                    </div>
                 </div>
 
-                <div id="category-buttons" class.name="p-4 md:p-6 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 bg-purple-800/50 border-t border-purple-700/50">
+                <!-- Puzzle 2: Substitution -->
+                <div class="bg-purple-800/60 backdrop-blur-sm border border-red-500 rounded-lg shadow-lg p-6">
+                    <h3 class="text-2xl font-semibold text-red-400 mb-3">Puzzle 2: Substitute</h3>
+                    <p class="text-pink-100 text-xl font-bold mb-4">
+                        If <span class="text-pink-300">a = 5</span> and <span class="text-pink-300">b = 2a - 3</span>, what is b²?
+                    </p>
+                    <div class="relative group">
+                        <button class="w-full bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 hover:bg-red-700">
+                            Show Solution
+                        </button>
+                        <div class="absolute inset-0 flex items-center justify-center bg-red-900/90 text-white text-2xl font-extrabold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            b² = 49
+                        </div>
                     </div>
+                </div>
+
+                <!-- Puzzle 3: Function Evaluation -->
+                <div class="bg-purple-800/60 backdrop-blur-sm border border-red-500 rounded-lg shadow-lg p-6">
+                    <h3 class="text-2xl font-semibold text-red-400 mb-3">Puzzle 3: The Function</h3>
+                    <p class="text-pink-100 text-xl font-bold mb-4">
+                        If <span class="text-pink-300">f(x) = x² + 2x + 1</span>, what is f(5)?
+                    </p>
+                    <div class="relative group">
+                        <button class="w-full bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 hover:bg-red-700">
+                            Show Solution
+                        </button>
+                        <div class="absolute inset-0 flex items-center justify-center bg-red-900/90 text-white text-2xl font-extrabold rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            f(5) = 36
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </section>
+
+
+        <!-- Interactive Game Section -->
+        <section id="game" class="bg-purple-900/70 backdrop-blur-lg border border-purple-700 rounded-lg shadow-2xl p-6 md:p-8 text-center">
+            <h2 class="text-3xl font-bold text-white mb-4">Algebra Sorting Challenge (Playable!)</h2>
+            <p id="status-message" class="text-lg text-pink-200 mb-6 transition duration-500">
+                Click 'Start Game' to test your algebra vocabulary!
+            </p>
             
-        </div>
-    </main>
+            <!-- Game Stats -->
+            <div class="flex justify-center space-x-8 mb-8">
+                <div class="text-lg font-semibold text-purple-300">
+                    Score: <span id="score-display" class="text-pink-400">0/9</span>
+                </div>
+                <div class="text-lg font-semibold text-purple-300">
+                    Time: <span id="timer-display" class="text-pink-400">0.00s</span>
+                </div>
+            </div>
+
+            <!-- Start Button -->
+            <button id="start-button" class="w-full max-w-sm bg-red-600 text-white hover:bg-red-700 font-bold py-4 px-6 rounded-lg text-xl transition duration-300 shadow-lg hover:shadow-xl">
+                Start Game
+            </button>
+            
+            <!-- Game Interface (Hidden until started) -->
+            <div id="game-interface" class="hidden">
+                
+                <!-- Card Display -->
+                <div id="card-display" class="bg-purple-700/50 border-2 border-pink-400 rounded-xl p-8 mb-8 flex justify-center items-center h-28">
+                    <!-- The expression is now plain text -->
+                    <span class="text-4xl text-white font-bold">
+                        Card Loading...
+                    </span>
+                </div>
+
+                <!-- Category Buttons -->
+                <div id="category-buttons" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Buttons will be generated by JavaScript -->
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 border-t border-purple-700/50 mt-16">
+        <p class="text-purple-300">&copy; 2025 Algebra Adventure. All rights reserved.</p>
+    </footer>
 
 </body>
 </html>
