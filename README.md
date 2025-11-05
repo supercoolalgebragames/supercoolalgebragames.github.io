@@ -229,7 +229,7 @@
             gameState.currentCardIndex++;
             
             // Short delay before moving to the next card
-            setTimeout(nextCard, 1000); 
+            setTimeout(nextCard,250); 
         }
         
         function endGame() {
