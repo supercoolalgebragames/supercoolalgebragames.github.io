@@ -571,7 +571,7 @@
         </div>
 
         <footer class="text-center p-8 mt-12 border-t border-purple-500/10">
-            <p class="text-purple-300 text-sm">© 2025 Algebra Adventure. All rights reserved.</p>
+            <p class="text-purple-300 text-sm">i bugfixed manually aaaaaa :copilot:</p>
         </footer>
 
     </div> </body>
