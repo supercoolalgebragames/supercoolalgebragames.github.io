@@ -589,7 +589,7 @@
         </div>
 
         <footer class="text-center py-8 border-t border-purple-500/20 mt-20 glass">
-            <p class="text-purple-300">An interactive algebra learning tool. Built with Gemini.</p>
+            <p class="text-purple-300">All rights reserved 2025 Algebra Adventure©</p>
         </footer>
 
     </div>
