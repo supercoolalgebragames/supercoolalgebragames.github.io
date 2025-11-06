@@ -571,7 +571,7 @@
         </div>
 
         <footer class="text-center p-8 mt-12 border-t border-purple-500/10">
-            <p class="text-purple-300 text-sm">why are you looking at this ":("</p>
+            <p class="text-purple-300 text-sm">why are you looking at this :(</p>
         </footer>
 
     </div> </body>
