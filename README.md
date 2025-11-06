@@ -25,6 +25,7 @@
             }
         }
     </script>
+    <!-- Load MathJax -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -113,15 +114,28 @@
         }
         
         /* Ensure MathJax content is centered and large */
-        #puzzle-equation .MathJax_Display {
+        #puzzle-equation .MathJax_Display,
+        #card-display .MathJax_Display {
             text-align: center !important;
-            font-size: 1.5em; /* Ensure the text is large */
+            /* Font size is controlled by Tailwind classes, but we ensure alignment */
+            margin: 0 !important;
         }
+
+        /* Shake animation for wrong puzzle answer */
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+          20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .shake {
+          animation: shake 0.5s ease-in-out;
+        }
+
     </style>
     <script>
         /* --- GAME LOGIC START --- */
 
-        const CATEGORIES = ["Equation", "Inequality", "Expression", "Constant", "Identity", "Function"];
+        const CATEGORIES = ["Equation", "Inequality", "Expression", "Term", "Identity", "Formula"];
         
         const ALL_CARDS = [
             // (Card data for the sorting game remains unchanged)
@@ -137,24 +151,24 @@
             ["\\frac{t}{2} - 3 > 1", "Inequality"], ["10 - x \\le 5", "Inequality"], ["\\vert y \\vert < 3", "Inequality"], ["\\vert z - 1 \\vert \\ge 2", "Inequality"],
             ["3(r+2) > 9", "Inequality"], ["-c + 4 \\le 10", "Inequality"], ["0 < x < 5", "Inequality"], ["-1 \\le 2q + 1 \\le 3", "Inequality"],
             ["x^2 > 4", "Inequality"], ["\\frac{n-1}{4} < 2", "Inequality"], ["d^2 + 1 \\ge 1", "Inequality"], ["\\vert 2a \\vert \\ne 6", "Inequality"],
-            // -------------------- Constants (20 Examples) --------------------
-            ["10", "Constant"], ["-3.5", "Constant"], ["\\pi", "Constant"], ["\\sqrt{16}", "Constant"],
-            ["e", "Constant"], ["\\log_{10}(100)", "Constant"], ["\\cos(0)", "Constant"], ["2^3", "Constant"],
-            ["-7", "Constant"], ["\\frac{1}{4}", "Constant"], ["(5+3)/2", "Constant"], ["0", "Constant"],
-            ["\\vert -12 \\vert", "Constant"], ["\\sqrt{2}", "Constant"], ["10\\%", "Constant"], ["-1", "Constant"],
-            ["\\frac{22}{7}", "Constant"], ["i^2", "Constant"], ["\\tan(45^{\\circ})", "Constant"], ["\\ln(e)", "Constant"],
+            // -------------------- Terms (20 Examples) --------------------
+            ["10", "Term"], ["-3.5", "Term"], ["\\pi", "Term"], ["\\sqrt{16}", "Term"],
+            ["e", "Term"], ["\\log_{10}(100)", "Term"], ["\\cos(0)", "Term"], ["2^3", "Term"],
+            ["-7", "Term"], ["\\frac{1}{4}", "Term"], ["(5+3)/2", "Term"], ["0", "Term"],
+            ["\\vert -12 \\vert", "Term"], ["\\sqrt{2}", "Term"], ["10\\%", "Term"], ["-1", "Term"],
+            ["\\frac{22}{7}", "Term"], ["i^2", "Term"], ["\\tan(45^{\\circ})", "Term"], ["\\ln(e)", "Term"],
             // -------------------- Identities (20 Examples) --------------------
             ["(x+1)^2 = x^2 + 2x + 1", "Identity"], ["a^2 - b^2 = (a-b)(a+b)", "Identity"], ["\\frac{x}{x} = 1", "Identity"], ["3x - x = 2x", "Identity"],
             ["\\sin^2(\\theta) + \\cos^2(\\theta) = 1", "Identity"], ["x(y+z) = xy + xz", "Identity"], ["(x-y)^2 = x^2 - 2xy + y^2", "Identity"], ["(a^m)(a^n) = a^{m+n}", "Identity"],
             ["\\frac{x+2x}{x} = 3", "Identity"], ["\\vert x^2 \\vert = x^2", "Identity"], ["(x+y)(x-y) + y^2 = x^2", "Identity"], ["\\frac{x^2-1}{x-1} = x+1", "Identity"],
             ["\\log(xy) = \\log(x) + \\log(y)", "Identity"], ["x^0 = 1", "Identity"], ["\\tan(\\theta) = \\frac{\sin(\\theta)}{\\cos(\\theta)}", "Identity"], ["x + 0 = x", "Identity"],
             ["\\sqrt{x^2} = \\vert x \\vert", "Identity"], ["(a+b)^3 = a^3+3a^2b+3ab^2+b^3", "Identity"], ["x - (-y) = x + y", "Identity"], ["-1(x) = -x", "Identity"],
-            // -------------------- Functions (20 Examples) --------------------
-            ["f(x) = 2x + 3", "Function"], ["g(t) = t^2 - 1", "Function"], ["h(z) = \\frac{1}{z}", "Function"], ["y = 5x", "Function"],
-            ["A(r) = \\pi r^2", "Function"], ["P(t) = 100e^{0.05t}", "Function"], ["L(m) = \\vert m \\vert", "Function"], ["s(d) = \\sqrt{d}", "Function"],
-            ["y = \\frac{1}{2}x - 4", "Function"], ["f(x) = \\cos(x)", "Function"], ["g(a,b) = a + b", "Function"], ["f(x) = \\lfloor x \\rfloor", "Function"],
-            ["H(p) = p^3", "Function"], ["V = \\frac{4}{3} \\pi r^3", "Function"], ["f(x) = \\ln(x)", "Function"], ["y = x^2", "Function"],
-            ["h(t) = 4.9t^2", "Function"], ["C(n) = 10 + 2n", "Function"], ["g(x) = \\frac{x-1}{x+1}", "Function"], ["y = \\sqrt{25 - x^2}", "Function"],
+            // -------------------- Formulas (20 Examples) --------------------
+            ["f(x) = 2x + 3", "Formula"], ["g(t) = t^2 - 1", "Formula"], ["h(z) = \\frac{1}{z}", "Formula"], ["y = 5x", "Formula"],
+            ["A(r) = \\pi r^2", "Formula"], ["P(t) = 100e^{0.05t}", "Formula"], ["L(m) = \\vert m \\vert", "Formula"], ["s(d) = \\sqrt{d}", "Formula"],
+            ["y = \\frac{1}{2}x - 4", "Formula"], ["f(x) = \\cos(x)", "Formula"], ["g(a,b) = a + b", "Formula"], ["f(x) = \\lfloor x \\rfloor", "Formula"],
+            ["H(p) = p^3", "Formula"], ["V = \\frac{4}{3} \\pi r^3", "Formula"], ["f(x) = \\ln(x)", "Formula"], ["y = x^2", "Formula"],
+            ["h(t) = 4.9t^2", "Formula"], ["C(n) = 10 + 2n", "Formula"], ["g(x) = \\frac{x-1}{x+1}", "Formula"], ["y = \\sqrt{25 - x^2}", "Formula"],
             // -------------------- Expressions (20 Examples) --------------------
             ["x^3 + 2x^2 - 5", "Expression"], ["a + 2b - 3c", "Expression"], ["\\frac{y+7}{x}", "Expression"], ["-4mn^2", "Expression"],
             ["7p - 1", "Expression"], ["(x+5)(x-5)", "Expression"], ["\\frac{k}{k+1}", "Expression"], ["\\sqrt{r} + 2r", "Expression"],
@@ -218,9 +232,17 @@
             // Game Listener
             startButton.addEventListener('click', startGame);
             
-            // Puzzle Listener
+            // Puzzle Listeners
             if (puzzleCheckBtn) {
                 puzzleCheckBtn.addEventListener('click', checkPuzzleAnswer);
+            }
+            // Add 'Enter' key listener for the puzzle input
+            if (puzzleInput) {
+                puzzleInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkPuzzleAnswer();
+                    }
+                });
             }
             
             resetUI();
@@ -314,10 +336,10 @@
             if (userCategory === correctCategory) {
                 gameState.score++;
                 statusMessage.textContent = `Correct! It's a ${correctCategory}.`;
-                statusMessage.className = 'text-lg text-green-300 mb-6 transition-all duration-500 font-medium';
+                statusMessage.className = 'text-lg text-green-300 mb-8 transition-all duration-500 font-medium';
             } else {
                 statusMessage.textContent = `Not quite. The correct answer was: ${correctCategory}.`;
-                statusMessage.className = 'text-lg text-red-300 mb-6 transition-all duration-500 font-medium';
+                statusMessage.className = 'text-lg text-red-300 mb-8 transition-all duration-500 font-medium';
             }
 
             scoreDisplay.textContent = `${gameState.score}/${CARD_COUNT}`;
@@ -335,7 +357,7 @@
             const percentage = Math.round((gameState.score / CARD_COUNT) * 100);
 
             statusMessage.textContent = `Game Complete! You scored ${gameState.score}/${CARD_COUNT} (${percentage}%) in ${totalTime.toFixed(2)} seconds!`;
-            statusMessage.className = 'text-lg text-purple-200 mb-6 transition-all duration-500 font-medium';
+            statusMessage.className = 'text-lg text-purple-200 mb-8 transition-all duration-500 font-medium';
             cardDisplay.innerHTML = `<div class="text-center"><div class="text-2xl text-white font-bold">${percentage >= 80 ? 'Excellent Work!' : percentage >= 60 ? 'Good Job!' : 'Keep Practicing!'}</div></div>`;
             startButton.textContent = "Play Again";
             startButton.classList.remove('hidden');
@@ -379,14 +401,28 @@
                 puzzleFeedback.textContent = "Not quite. Try again!";
                 puzzleFeedback.className = 'text-lg text-red-300 mt-6 h-6 transition-all duration-300';
                 
+                // Add shake animation
+                puzzleInput.classList.add('shake');
+                
                 puzzleInput.value = "";
+
+                // Remove shake class after animation
+                setTimeout(() => {
+                    if (puzzleInput) {
+                        puzzleInput.classList.remove('shake');
+                    }
+                }, 500);
             }
             
+            // Clear feedback message (if not correct)
             if (userAnswer !== correctAnswer) {
                 setTimeout(() => {
-                    if(puzzleFeedback) {
-                        puzzleFeedback.textContent = "";
-                        puzzleFeedback.className = 'text-lg text-purple-200 mt-6 h-6 transition-all duration-300';
+                    if(puzzleFeedback && puzzleFeedback.textContent !== "") {
+                         // Only clear if it's not the "Correct!" message
+                         if (userAnswer !== correctAnswer) {
+                            puzzleFeedback.textContent = "";
+                            puzzleFeedback.className = 'text-lg text-purple-200 mt-6 h-6 transition-all duration-300';
+                         }
                     }
                 }, 3500);
             }
@@ -396,8 +432,10 @@
 </head>
 <body class="font-sans text-purple-50 antialiased">
 
+    <!-- Fixed animated background -->
     <div class="animated-gradient"></div>
 
+    <!-- Scrollable content wrapper -->
     <div class="main-content-wrapper">
 
         <nav class="glass sticky top-0 z-50 border-b border-purple-500/20">
@@ -405,6 +443,10 @@
                 <div class="flex items-center justify-between h-16">
                     <div class="flex items-center">
                         <a href="#" class="text-2xl font-bold text-white flex items-center gap-2">
+                            <!-- Icon for logo -->
+                            <svg class="w-8 h-8 text-pink-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h13.5m-13.5 7.5h13.5m-13.5-3.75h13.5m-13.5-3.75h13.5m-6-3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Z" />
+                            </svg>
                             <span>Algebra Adventure</span>
                         </a>
                     </div>
@@ -418,11 +460,15 @@
             </div>
         </nav>
 
+        <!-- Main content area -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
 
             <section id="home" class="text-center mb-20 fade-in">
                 <div class="float mb-8">
-                    <div class="inline-block text-7xl md:text-9xl mb-6"></div>
+                    <!-- Hero Icon: Replaced with user's logo -->
+                    <div class="inline-block text-7xl md:text-9xl mb-6">
+                        <img src="https://i.postimg.cc/DwmSrTf2/IMG-1618.jpg" alt="Algebra Adventure Logo" class="w-24 h-24 md:w-32 md:h-32 inline-block object-contain rounded-full">
+                    </div>
                 </div>
                 <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
                     Algebra Adventure
@@ -438,19 +484,38 @@
             <section id="lessons" class="mb-20 fade-in">
                 <h2 class="text-4xl font-bold text-white mb-10 text-center">Key Concepts</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Lesson 1 -->
                     <div class="glass-strong rounded-2xl p-8 hover:scale-105 transition-all duration-300 glow-hover">
-                        <div class="text-4xl mb-4"></div>
+                        <div class="text-4xl mb-4 text-pink-400">
+                            <!-- Icon: Scale (for equality) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75m-8.37 0a18.72 18.72 0 0 1-4.185-.75m8.37 0a18.719 18.719 0 0 0 4.185-.75m-8.37 0a5.992 5.992 0 0 0-4.185.75m8.37 0a5.992 5.992 0 0 1 4.185.75m0 0h2.132c.621 0 1.17-.256 1.562-.686a2.36 2.36 0 0 0 .528-1.618L21 12M3 12h2.132c.621 0 1.17.256 1.562.686a2.36 2.36 0 0 1 .528 1.618L6 20.25m0 0a5.992 5.992 0 0 0 4.185.75m0 0a5.992 5.992 0 0 1 4.185.75" />
+                            </svg>
+                        </div>
                         <h3 class="text-2xl font-bold text-pink-300 mb-4">Equations & Inequalities</h3>
                         <p class="text-purple-200 leading-relaxed">Statements that show relationships between expressions using equality or comparison operators.</p>
                     </div>
+                    <!-- Lesson 2 -->
                     <div class="glass-strong rounded-2xl p-8 hover:scale-105 transition-all duration-300 glow-hover">
-                        <div class="text-4xl mb-4"></div>
-                        <h3 class="text-2xl font-bold text-pink-300 mb-4">Expressions & Constants</h3>
+                        <div class="text-4xl mb-4 text-pink-400">
+                            <!-- Icon: Variables (x, y) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6.75l6 6 9-13.5" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-pink-300 mb-4">Expressions & Terms</h3>
                         <p class="text-purple-200 leading-relaxed">Mathematical phrases combining numbers and variables, alongside fixed numerical values.</p>
                     </div>
+                    <!-- Lesson 3 -->
                     <div class="glass-strong rounded-2xl p-8 hover:scale-105 transition-all duration-300 glow-hover">
-                        <div class="text-4xl mb-4"></div>
-                        <h3 class="text-2xl font-bold text-pink-300 mb-4">Functions & Identities</h3>
+                        <div class="text-4xl mb-4 text-pink-400">
+                            <!-- Icon: Function (f(x)) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m-16.5 0v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h16.5M16.5 3v11.25a2.25 2.25 0 0 1-2.25 2.25H15M16.5 3h-1.5m1.5 0h1.5M13.5 16.5h-3A2.25 2.25 0 0 0 8.25 14.25V3m4.5 13.5h-3m3 0V3m0 13.5a2.25 2.25 0 0 0 2.25-2.25V3" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-pink-300 mb-4">Formulas & Identities</h3>
                         <p class="text-purple-200 leading-relaxed">Mappings between variables and equations that hold true for all values.</p>
                     </div>
                 </div>
@@ -459,7 +524,12 @@
             <section id="puzzles" class="mb-20 fade-in">
                 <h2 class="text-4xl font-bold text-white mb-10 text-center">Algebra Puzzle</h2>
                 <div class="glass-strong rounded-2xl p-8 md:p-12 text-center glow">
-                    <div class="text-6xl mb-6"></div>
+                    <div class="text-6xl mb-6 text-pink-400">
+                        <!-- Icon: Lightbulb -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 inline-block" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.023a7.49 7.49 0 0 1-3.75 0m3.75 0a7.49 7.49 0 0 0-3.75 0m7.5 0v-.003c0-1.02-.32-2.016-.866-2.868m-1.732-2.868A7.463 7.463 0 0 0 12 5.25c-1.39 0-2.738.363-3.901 1.025m7.802 0A7.463 7.463 0 0 1 12 5.25c-1.39 0-2.738.363-3.901 1.025m7.802 0c.343.432.62.91.815 1.423m-9.43 0c.195-.513.472-.99.815-1.423m8.615 0c.205.513.337 1.05.392 1.6m-9.4 0c.055-.55.187-1.087.392-1.6M12 15.75a3 3 0 0 1-3-3v-1.5a3 3 0 0 1 3-3a3 3 0 0 1 3 3v1.5a3 3 0 0 1-3 3Z" />
+                        </svg>
+                    </div>
                     <h3 class="text-2xl font-bold text-pink-300 mb-4">Solve for \(x\)!</h3>
                     <p class="text-xl text-purple-100 mb-6 max-w-2xl mx-auto">
                         Can you find the value of \(x\) in the equation below?
@@ -470,7 +540,7 @@
                     </div>
                     
                     <div class="flex flex-col md:flex-row justify-center items-center gap-4 max-w-md mx-auto">
-                        <input type="text" id="puzzle-input" class="w-full md:w-1/2 bg-white/10 border border-purple-400 text-white text-lg rounded-lg p-3 text-center focus:ring-pink-500 focus:border-pink-500" placeholder="Enter your answer">
+                        <input type="text" id="puzzle-input" class="w-full md:w-1/2 bg-white/10 border border-purple-400 text-white text-lg rounded-lg p-3 text-center focus:ring-pink-500 focus:border-pink-500 transition-all duration-300" placeholder="Enter your answer">
                         <button id="puzzle-check-btn" class="w-full md:w-1/2 bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300 hover:scale-105 glow">
                             Check Answer
                         </button>
@@ -510,6 +580,7 @@
                     </div>
 
                     <div id="category-buttons" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                        <!-- Buttons are generated by JS -->
                     </div>
                 </div>
 
@@ -518,7 +589,7 @@
         </div>
 
         <footer class="text-center py-8 border-t border-purple-500/20 mt-20 glass">
-            <p class="text-purple-300">its a me mario. painstakingly bugfixed</p>
+            <p class="text-purple-300">An interactive algebra learning tool. Built with Gemini.</p>
         </footer>
 
     </div>
