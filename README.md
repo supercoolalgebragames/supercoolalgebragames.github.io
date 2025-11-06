@@ -461,7 +461,7 @@
             <section id="home" class="text-center mb-20 fade-in">
                 <div class="float mb-8">
                     <div class="inline-block text-7xl md:text-9xl mb-6">
-                        <img src="https://i.postimg.cc/DwmSrTf2/IMG-1618.jpg" alt="Algebra Adventure Logo" class="w-24 h-24 md:w-32 md:h-32 inline-block object-contain rounded-full">
+                        <img src="https://i.postimg.cc/JnwDkfCs/IMG-0274.jpg" alt="Algebra Adventure Logo" class="w-24 h-24 md:w-32 md:h-32 inline-block object-contain rounded-full">
                     </div>
                 </div>
                 <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 bg-gradient-to-r from-pink-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
