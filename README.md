@@ -212,6 +212,8 @@
         
         let puzzleInput, puzzleCheckBtn, puzzleFeedback, puzzleEquation;
 
+#<3
+
         window.onload = function() {
             // Game Elements
             cardDisplay = document.getElementById('card-display');
