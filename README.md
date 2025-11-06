@@ -25,7 +25,6 @@
             }
         }
     </script>
-    <!-- Load MathJax -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -163,12 +162,12 @@
             ["\\frac{x+2x}{x} = 3", "Identity"], ["\\vert x^2 \\vert = x^2", "Identity"], ["(x+y)(x-y) + y^2 = x^2", "Identity"], ["\\frac{x^2-1}{x-1} = x+1", "Identity"],
             ["\\log(xy) = \\log(x) + \\log(y)", "Identity"], ["x^0 = 1", "Identity"], ["\\tan(\\theta) = \\frac{\sin(\\theta)}{\\cos(\\theta)}", "Identity"], ["x + 0 = x", "Identity"],
             ["\\sqrt{x^2} = \\vert x \\vert", "Identity"], ["(a+b)^3 = a^3+3a^2b+3ab^2+b^3", "Identity"], ["x - (-y) = x + y", "Identity"], ["-1(x) = -x", "Identity"],
-            // -------------------- Formulas (20 Examples) --------------------
-            ["f(x) = 2x + 3", "Formula"], ["g(t) = t^2 - 1", "Formula"], ["h(z) = \\frac{1}{z}", "Formula"], ["y = 5x", "Formula"],
-            ["A(r) = \\pi r^2", "Formula"], ["P(t) = 100e^{0.05t}", "Formula"], ["L(m) = \\vert m \\vert", "Formula"], ["s(d) = \\sqrt{d}", "Formula"],
-            ["y = \\frac{1}{2}x - 4", "Formula"], ["f(x) = \\cos(x)", "Formula"], ["g(a,b) = a + b", "Formula"], ["f(x) = \\lfloor x \\rfloor", "Formula"],
-            ["H(p) = p^3", "Formula"], ["V = \\frac{4}{3} \\pi r^3", "Formula"], ["f(x) = \\ln(x)", "Formula"], ["y = x^2", "Formula"],
-            ["h(t) = 4.9t^2", "Formula"], ["C(n) = 10 + 2n", "Formula"], ["g(x) = \\frac{x-1}{x+1}", "Formula"], ["y = \\sqrt{25 - x^2}", "Formula"],
+            // -------------------- Formulas (20 Examples) - UPDATED --------------------
+            ["A = \\pi r^2", "Formula"], ["V = \\frac{4}{3} \\pi r^3", "Formula"], ["a^2 + b^2 = c^2", "Formula"], ["P = 2l + 2w", "Formula"],
+            ["A = \\frac{1}{2}bh", "Formula"], ["y = mx + b", "Formula"], ["E = mc^2", "Formula"], ["d = rt", "Formula"],
+            ["I = Prt", "Formula"], ["V = IR", "Formula"], ["F = \\frac{9}{5}C + 32", "Formula"], ["C = \\frac{5}{9}(F - 32)", "Formula"],
+            ["x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}", "Formula"], ["F = ma", "Formula"], ["V = \\pi r^2 h", "Formula"], ["C = 2 \\pi r", "Formula"],
+            ["PV = nRT", "Formula"], ["F = G\\frac{m_1 m_2}{r^2}", "Formula"], ["A = P(1 + \\frac{r}{n})^{nt}", "Formula"], ["A = 4 \\pi r^2", "Formula"],
             // -------------------- Expressions (20 Examples) --------------------
             ["x^3 + 2x^2 - 5", "Expression"], ["a + 2b - 3c", "Expression"], ["\\frac{y+7}{x}", "Expression"], ["-4mn^2", "Expression"],
             ["7p - 1", "Expression"], ["(x+5)(x-5)", "Expression"], ["\\frac{k}{k+1}", "Expression"], ["\\sqrt{r} + 2r", "Expression"],
@@ -420,8 +419,8 @@
                     if(puzzleFeedback && puzzleFeedback.textContent !== "") {
                          // Only clear if it's not the "Correct!" message
                          if (userAnswer !== correctAnswer) {
-                            puzzleFeedback.textContent = "";
-                            puzzleFeedback.className = 'text-lg text-purple-200 mt-6 h-6 transition-all duration-300';
+                             puzzleFeedback.textContent = "";
+                             puzzleFeedback.className = 'text-lg text-purple-200 mt-6 h-6 transition-all duration-300';
                          }
                     }
                 }, 3500);
@@ -432,10 +431,8 @@
 </head>
 <body class="font-sans text-purple-50 antialiased">
 
-    <!-- Fixed animated background -->
     <div class="animated-gradient"></div>
 
-    <!-- Scrollable content wrapper -->
     <div class="main-content-wrapper">
 
         <nav class="glass sticky top-0 z-50 border-b border-purple-500/20">
@@ -443,7 +440,6 @@
                 <div class="flex items-center justify-between h-16">
                     <div class="flex items-center">
                         <a href="#" class="text-2xl font-bold text-white flex items-center gap-2">
-                            <!-- Icon for logo -->
                             <svg class="w-8 h-8 text-pink-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h13.5m-13.5 7.5h13.5m-13.5-3.75h13.5m-13.5-3.75h13.5m-6-3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Z" />
                             </svg>
@@ -460,12 +456,10 @@
             </div>
         </nav>
 
-        <!-- Main content area -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
 
             <section id="home" class="text-center mb-20 fade-in">
                 <div class="float mb-8">
-                    <!-- Hero Icon: Replaced with user's logo -->
                     <div class="inline-block text-7xl md:text-9xl mb-6">
                         <img src="https://i.postimg.cc/DwmSrTf2/IMG-1618.jpg" alt="Algebra Adventure Logo" class="w-24 h-24 md:w-32 md:h-32 inline-block object-contain rounded-full">
                     </div>
@@ -484,10 +478,8 @@
             <section id="lessons" class="mb-20 fade-in">
                 <h2 class="text-4xl font-bold text-white mb-10 text-center">Key Concepts</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Lesson 1 -->
                     <div class="glass-strong rounded-2xl p-8 hover:scale-105 transition-all duration-300 glow-hover">
                         <div class="text-4xl mb-4 text-pink-400">
-                            <!-- Icon: Scale (for equality) -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75m-8.37 0a18.72 18.72 0 0 1-4.185-.75m8.37 0a18.719 18.719 0 0 0 4.185-.75m-8.37 0a5.992 5.992 0 0 0-4.185.75m8.37 0a5.992 5.992 0 0 1 4.185.75m0 0h2.132c.621 0 1.17-.256 1.562-.686a2.36 2.36 0 0 0 .528-1.618L21 12M3 12h2.132c.621 0 1.17.256 1.562.686a2.36 2.36 0 0 1 .528 1.618L6 20.25m0 0a5.992 5.992 0 0 0 4.185.75m0 0a5.992 5.992 0 0 1 4.185.75" />
                             </svg>
@@ -495,10 +487,8 @@
                         <h3 class="text-2xl font-bold text-pink-300 mb-4">Equations & Inequalities</h3>
                         <p class="text-purple-200 leading-relaxed">Statements that show relationships between expressions using equality or comparison operators.</p>
                     </div>
-                    <!-- Lesson 2 -->
                     <div class="glass-strong rounded-2xl p-8 hover:scale-105 transition-all duration-300 glow-hover">
                         <div class="text-4xl mb-4 text-pink-400">
-                            <!-- Icon: Variables (x, y) -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                               <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6.75l6 6 9-13.5" />
@@ -507,10 +497,8 @@
                         <h3 class="text-2xl font-bold text-pink-300 mb-4">Expressions & Terms</h3>
                         <p class="text-purple-200 leading-relaxed">Mathematical phrases combining numbers and variables, alongside fixed numerical values.</p>
                     </div>
-                    <!-- Lesson 3 -->
                     <div class="glass-strong rounded-2xl p-8 hover:scale-105 transition-all duration-300 glow-hover">
                         <div class="text-4xl mb-4 text-pink-400">
-                            <!-- Icon: Function (f(x)) -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m-16.5 0v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h16.5M16.5 3v11.25a2.25 2.25 0 0 1-2.25 2.25H15M16.5 3h-1.5m1.5 0h1.5M13.5 16.5h-3A2.25 2.25 0 0 0 8.25 14.25V3m4.5 13.5h-3m3 0V3m0 13.5a2.25 2.25 0 0 0 2.25-2.25V3" />
                             </svg>
@@ -525,7 +513,6 @@
                 <h2 class="text-4xl font-bold text-white mb-10 text-center">Algebra Puzzle</h2>
                 <div class="glass-strong rounded-2xl p-8 md:p-12 text-center glow">
                     <div class="text-6xl mb-6 text-pink-400">
-                        <!-- Icon: Lightbulb -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 inline-block" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.023a7.49 7.49 0 0 1-3.75 0m3.75 0a7.49 7.49 0 0 0-3.75 0m7.5 0v-.003c0-1.02-.32-2.016-.866-2.868m-1.732-2.868A7.463 7.463 0 0 0 12 5.25c-1.39 0-2.738.363-3.901 1.025m7.802 0A7.463 7.463 0 0 1 12 5.25c-1.39 0-2.738.363-3.901 1.025m7.802 0c.343.432.62.91.815 1.423m-9.43 0c.195-.513.472-.99.815-1.423m8.615 0c.205.513.337 1.05.392 1.6m-9.4 0c.055-.55.187-1.087.392-1.6M12 15.75a3 3 0 0 1-3-3v-1.5a3 3 0 0 1 3-3a3 3 0 0 1 3 3v1.5a3 3 0 0 1-3 3Z" />
                         </svg>
@@ -567,32 +554,25 @@
                     </div>
                 </div>
 
-                <button id="start-button" class="w-full max-w-md bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-all duration-300 hover:scale-105 glow mb-8">
-                    Start Game
+                <button id="start-button" class="bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 hover:scale-105 glow">
+                    Start Challenge
                 </button>
-                
-                <div id="game-interface" class="hidden">
-                    
-                    <div id="card-display" class="glass-strong rounded-2xl p-10 mb-8 min-h-[140px] flex justify-center items-center glow">
-                        <span class="text-3xl text-white font-bold">
-                            Ready to start...
-                        </span>
-                    </div>
 
-                    <div id="category-buttons" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-                        <!-- Buttons are generated by JS -->
-                    </div>
+                <div id="game-interface" class="hidden">
+                    <div id="card-display" class="glass rounded-2xl p-8 mb-8 min-h-[160px] flex items-center justify-center glow transition-all duration-300">
+                        </div>
+                    
+                    <div id="category-buttons" class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
+                        </div>
                 </div>
 
             </section>
 
         </div>
 
-        <footer class="text-center py-8 border-t border-purple-500/20 mt-20 glass">
-            <p class="text-purple-300">All rights reserved 2025 Algebra Adventure©</p>
+        <footer class="text-center p-8 mt-12 border-t border-purple-500/10">
+            <p class="text-purple-300 text-sm">i bugfixed it :copilot:</p>
         </footer>
 
-    </div>
-
-</body>
+    </div> </body>
 </html>
