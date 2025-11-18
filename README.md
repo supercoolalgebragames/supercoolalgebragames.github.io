@@ -122,53 +122,13 @@
 
         /* Shake animation for wrong puzzle answer */
         @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
+          0%, 100% { transform: translateX(0); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+          20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
         .shake {
-            animation: shake 0.5s ease-in-out;
+          animation: shake 0.5s ease-in-out;
         }
-
-        /* */
-        .confetti-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Lets you click through it */
-            z-index: 1000;
-            overflow: hidden;
-        }
-        
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 18px;
-            border-radius: 2px;
-            top: -20px; /* Start off-screen */
-            opacity: 0;
-            animation: fall 5s linear infinite;
-        }
-        
-        /* Use your theme colors! */
-        .confetti.pink { background-color: #ec4899; }
-        .confetti.purple { background-color: #a855f7; }
-        .confetti.yellow { background-color: #facc15; }
-        .confetti.blue { background-color: #3b82f6; }
-
-        @keyframes fall {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-        /* */
 
     </style>
     <script>
@@ -252,6 +212,8 @@
         
         let puzzleInput, puzzleCheckBtn, puzzleFeedback, puzzleEquation;
 
+#<3
+
         window.onload = function() {
             // Game Elements
             cardDisplay = document.getElementById('card-display');
@@ -289,9 +251,7 @@
 
             // Load the first puzzle AFTER all elements are defined
             loadNextPuzzle(); 
-
-            // startConfetti();
-            // };
+        };
 
         function resetUI() {
             gameInterface.classList.add('hidden');
@@ -428,17 +388,16 @@
             
             const userAnswer = puzzleInput.value.trim();
             const correctAnswer = currentPuzzle.answer;
-
-            // Updated check to compare numbers, not just strings
-            if (userAnswer === "") {
-                puzzleFeedback.textContent = "Please enter a value.";
-                puzzleFeedback.className = 'text-lg text-yellow-300 mt-6 h-6 transition-all duration-300';
-            } else if (parseFloat(userAnswer) === parseFloat(correctAnswer)) {
+            
+            if (userAnswer === correctAnswer) {
                 puzzleFeedback.textContent = `Correct! The answer is ${correctAnswer}. Loading next puzzle...`;
                 puzzleFeedback.className = 'text-lg text-green-300 mt-6 h-6 transition-all duration-300';
                 
                 setTimeout(loadNextPuzzle, 1500);
 
+            } else if (userAnswer === "") {
+                puzzleFeedback.textContent = "Please enter a value.";
+                puzzleFeedback.className = 'text-lg text-yellow-300 mt-6 h-6 transition-all duration-300';
             } else {
                 puzzleFeedback.textContent = "Not quite. Try again!";
                 puzzleFeedback.className = 'text-lg text-red-300 mt-6 h-6 transition-all duration-300';
@@ -457,49 +416,24 @@
             }
             
             // Clear feedback message (if not correct)
-            if (parseFloat(userAnswer) !== parseFloat(correctAnswer)) {
+            if (userAnswer !== correctAnswer) {
                 setTimeout(() => {
-                    if(puzzleFeedback && !puzzleFeedback.textContent.startsWith("Correct!")) {
-                         puzzleFeedback.textContent = "";
-                         puzzleFeedback.className = 'text-lg text-purple-200 mt-6 h-6 transition-all duration-300';
+                    if(puzzleFeedback && puzzleFeedback.textContent !== "") {
+                         // Only clear if it's not the "Correct!" message
+                         if (userAnswer !== correctAnswer) {
+                             puzzleFeedback.textContent = "";
+                             puzzleFeedback.className = 'text-lg text-purple-200 mt-6 h-6 transition-all duration-300';
+                         }
                     }
                 }, 3500);
             }
         }
 
-        // function startConfetti() {
-            const wrapper = document.querySelector('.confetti-wrapper');
-            if (!wrapper) return;
-            
-            const colors = ['pink', 'purple', 'yellow', 'blue'];
-            const confettiCount = 100; // More confetti!
-
-            for (let i = 0; i < confettiCount; i++) {
-                const confetti = document.createElement('div');
-                // Pick a random color from our list
-                confetti.className = 'confetti ' + colors[Math.floor(Math.random() * colors.length)];
-                
-                // Pick a random horizontal starting position
-                confetti.style.left = Math.random() * 100 + 'vw';
-                
-                // Randomize the animation delay (so they don't all fall at once)
-                confetti.style.animationDelay = Math.random() * 5 + 's';
-                
-                // Randomize the animation duration (for different fall speeds)
-                confetti.style.animationDuration = (Math.random() * 3 + 4) + 's'; 
-
-                wrapper.appendChild(confetti);
-            }
-        }
-        // </script>
+    </script>
 </head>
 <body class="font-sans text-purple-50 antialiased">
 
     <div class="animated-gradient"></div>
-
-    -->
-    <div class="confetti-wrapper"></div>
-    -->
 
     <div class="main-content-wrapper">
 
@@ -509,7 +443,7 @@
                     <div class="flex items-center">
                         <a href="#" class="text-2xl font-bold text-white flex items-center gap-2">
                             <svg class="w-8 h-8 text-pink-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h13.5m-13.5 7.5h13.5m-13.5-3.75h13.5m-13.5-3.75h13.5m-6-3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h13.5m-13.5 7.5h13.5m-13.5-3.75h13.5m-13.5-3.75h13.5m-6-3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Z" />
                             </svg>
                             <span>Algebra Adventure</span>
                         </a>
@@ -527,16 +461,6 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
 
             <section id="home" class="text-center mb-20 fade-in">
-                
-                -->
-                <div class="glass-strong rounded-2xl p-6 md:p-8 mb-12 max-w-2xl mx-auto glow">
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2">
-                        🎉 HAPPY BIRTHDAY MISS FORREST! 🎂
-                    </h2>
-                    <p class="text-lg md:text-xl text-pink-200">Hope you have a great day! 🥳</p>
-                </div>
-                -->
-                
                 <div class="float mb-8">
                     <div class="inline-block text-7xl md:text-9xl mb-6">
                         <img src="https://i.postimg.cc/JnwDkfCs/IMG-0274.jpg" alt="Algebra Adventure Logo" class="w-24 h-24 md:w-32 md:h-32 inline-block object-contain rounded-full">
@@ -559,7 +483,7 @@
                     <div class="glass-strong rounded-2xl p-8 hover:scale-105 transition-all duration-300 glow-hover">
                         <div class="text-4xl mb-4 text-pink-400">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75m-8.37 0a18.72 18.72 0 0 1-4.185-.75m8.37 0a18.719 18.719 0 0 0 4.185-.75m-8.37 0a5.992 5.992 0 0 0-4.185.75m8.37 0a5.992 5.992 0 0 1 4.185.75m0 0h2.132c.621 0 1.17-.256 1.562-.686a2.36 2.36 0 0 0 .528-1.618L21 12M3 12h2.132c.621 0 1.17.256 1.562.686a2.36 2.36 0 0 1 .528 1.618L6 20.25m0 0a5.992 5.992 0 0 0 4.185.75m0 0a5.992 5.992 0 0 1 4.185.75" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75m-8.37 0a18.72 18.72 0 0 1-4.185-.75m8.37 0a18.719 18.719 0 0 0 4.185-.75m-8.37 0a5.992 5.992 0 0 0-4.185.75m8.37 0a5.992 5.992 0 0 1 4.185.75m0 0h2.132c.621 0 1.17-.256 1.562-.686a2.36 2.36 0 0 0 .528-1.618L21 12M3 12h2.132c.621 0 1.17.256 1.562.686a2.36 2.36 0 0 1 .528 1.618L6 20.25m0 0a5.992 5.992 0 0 0 4.185.75m0 0a5.992 5.992 0 0 1 4.185.75" />
                             </svg>
                         </div>
                         <h3 class="text-2xl font-bold text-pink-300 mb-4">Equations & Inequalities</h3>
@@ -568,8 +492,8 @@
                     <div class="glass-strong rounded-2xl p-8 hover:scale-105 transition-all duration-300 glow-hover">
                         <div class="text-4xl mb-4 text-pink-400">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6.75l6 6 9-13.5" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6.75l6 6 9-13.5" />
                             </svg>
                         </div>
                         <h3 class="text-2xl font-bold text-pink-300 mb-4">Expressions & Terms</h3>
@@ -578,7 +502,7 @@
                     <div class="glass-strong rounded-2xl p-8 hover:scale-105 transition-all duration-300 glow-hover">
                         <div class="text-4xl mb-4 text-pink-400">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m-16.5 0v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h16.5M16.5 3v11.25a2.25 2.25 0 0 1-2.25 2.25H15M16.5 3h-1.5m1.5 0h1.5M13.5 16.5h-3A2.25 2.25 0 0 0 8.25 14.25V3m4.5 13.5h-3m3 0V3m0 13.5a2.25 2.25 0 0 0 2.25-2.25V3" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m-16.5 0v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h16.5M16.5 3v11.25a2.25 2.25 0 0 1-2.25 2.25H15M16.5 3h-1.5m1.5 0h1.5M13.5 16.5h-3A2.25 2.25 0 0 0 8.25 14.25V3m4.5 13.5h-3m3 0V3m0 13.5a2.25 2.25 0 0 0 2.25-2.25V3" />
                             </svg>
                         </div>
                         <h3 class="text-2xl font-bold text-pink-300 mb-4">Formulas & Identities</h3>
@@ -592,7 +516,7 @@
                 <div class="glass-strong rounded-2xl p-8 md:p-12 text-center glow">
                     <div class="text-6xl mb-6 text-pink-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 inline-block" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.023a7.49 7.49 0 0 1-3.75 0m3.75 0a7.49 7.49 0 0 0-3.75 0m7.5 0v-.003c0-1.02-.32-2.016-.866-2.868m-1.732-2.868A7.463 7.463 0 0 0 12 5.25c-1.39 0-2.738.363-3.901 1.025m7.802 0A7.463 7.463 0 0 1 12 5.25c-1.39 0-2.738.363-3.901 1.025m7.802 0c.343.432.62.91.815 1.423m-9.43 0c.195-.513.472-.99.815-1.423m8.615 0c.205.513.337 1.05.392 1.6m-9.4 0c.055-.55.187-1.087.392-1.6M12 15.75a3 3 0 0 1-3-3v-1.5a3 3 0 0 1 3-3a3 3 0 0 1 3 3v1.5a3 3 0 0 1-3 3Z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.023a7.49 7.49 0 0 1-3.75 0m3.75 0a7.49 7.49 0 0 0-3.75 0m7.5 0v-.003c0-1.02-.32-2.016-.866-2.868m-1.732-2.868A7.463 7.463 0 0 0 12 5.25c-1.39 0-2.738.363-3.901 1.025m7.802 0A7.463 7.463 0 0 1 12 5.25c-1.39 0-2.738.363-3.901 1.025m7.802 0c.343.432.62.91.815 1.423m-9.43 0c.195-.513.472-.99.815-1.423m8.615 0c.205.513.337 1.05.392 1.6m-9.4 0c.055-.55.187-1.087.392-1.6M12 15.75a3 3 0 0 1-3-3v-1.5a3 3 0 0 1 3-3a3 3 0 0 1 3 3v1.5a3 3 0 0 1-3 3Z" />
                         </svg>
                     </div>
                     <h3 class="text-2xl font-bold text-pink-300 mb-4">Solve for \(x\)!</h3>
@@ -638,14 +562,19 @@
 
                 <div id="game-interface" class="hidden">
                     <div id="card-display" class="glass rounded-2xl p-8 mb-8 min-h-[160px] flex items-center justify-center glow transition-all duration-300">
-                    </div>
+                        </div>
                     
                     <div id="category-buttons" class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
                         </div>
                 </div>
+
             </section>
 
         </div>
-    </div>
-</body>
+
+        <footer class="text-center p-8 mt-12 border-t border-purple-500/10">
+            <p class="text-purple-300 text-sm">why are you looking at this :(</p>
+        </footer>
+
+    </div> </body>
 </html>
