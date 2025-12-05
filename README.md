@@ -212,8 +212,6 @@
         
         let puzzleInput, puzzleCheckBtn, puzzleFeedback, puzzleEquation;
 
-#<3
-
         window.onload = function() {
             // Game Elements
             cardDisplay = document.getElementById('card-display');
@@ -443,7 +441,7 @@
                     <div class="flex items-center">
                         <a href="#" class="text-2xl font-bold text-white flex items-center gap-2">
                             <svg class="w-8 h-8 text-pink-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h13.5m-13.5 7.5h13.5m-13.5-3.75h13.5m-13.5-3.75h13.5m-6-3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Z" />
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h13.5m-13.5 7.5h13.5m-13.5-3.75h13.5m-13.5-3.75h13.5m-6-3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Zm0 3.75h.008v.008h-.008v-.008Z" />
                             </svg>
                             <span>Algebra Adventure</span>
                         </a>
@@ -562,19 +560,14 @@
 
                 <div id="game-interface" class="hidden">
                     <div id="card-display" class="glass rounded-2xl p-8 mb-8 min-h-[160px] flex items-center justify-center glow transition-all duration-300">
-                        </div>
+                    </div>
                     
                     <div id="category-buttons" class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
                         </div>
                 </div>
-
             </section>
 
         </div>
-
-        <footer class="text-center p-8 mt-12 border-t border-purple-500/10">
-            <p class="text-purple-300 text-sm">why are u looking at this :(</p>
-        </footer>
-
-    </div> </body>
+    </div>
+</body>
 </html>
